@@ -1,0 +1,3 @@
+import os
+
+API_KEY = os.getenv("PRODUCT_BOARD_JAY_WALL_TEST_INTEGRATION")
