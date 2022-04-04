@@ -1,15 +1,19 @@
 import json
 import os
 import requests
+import asana
 
 PRODUCT_BOARD_API_KEY = os.getenv("PRODUCT_BOARD_JAY_WALL_TEST_INTEGRATION")
-ASANA_CLIENT_SECRET = os.getenv("ASANA_TEST_INTEGRATION_CLIENT_SECRET")
-headers = {'Authorization': 'Bearer ' + PRODUCT_BOARD_API_KEY,
+ASANA_PERSONAL_ACCESS_TOKEN = os.getenv("ASANA_PROCUT_BOARD_TEST_2")
+product_board_headers = {'Authorization': 'Bearer ' + PRODUCT_BOARD_API_KEY,
            'X-Version': '1',
            'Content-Type': 'application/json'}
 
+# asana_headers = {'Authorization': 'Bearer ' + ASANA_CLIENT_SECRET}
+
+
 def get_features_list():
-    r = requests.get("https://api.productboard.com/features", headers=headers)
+    r = requests.get("https://api.productboard.com/features", headers=product_board_headers)
     print(r.text)
 
     features_dict = r.json()['data']
@@ -19,6 +23,35 @@ def get_features_list():
         print(feature)
 
     return list
+
+
+def get_tasks_list():
+    # https://developers.asana.com/docs/authentication
+    print(ASANA_PERSONAL_ACCESS_TOKEN)
+    client = asana.Client.access_token(ASANA_PERSONAL_ACCESS_TOKEN)
+    client.options['client_name'] = "hello_world_python"
+    # Get your user info
+    me = client.users.me()
+
+    # Print out your information
+    print("Hello world! " + "My name is " + me['name'] + "!")
+
+
+    # result = client.tasks.get_tasks_for_project('1202041241966322', {'param': 'value', 'param': 'value'}, opt_pretty=True)
+    # print(result.data)
+    # print(ASANA_CLIENT_SECRET)
+    # me = client.users.me()
+    # print("Hello " + me['name'])
+
+    # workspace_id = me['workspaces'][0]['gid']
+    # project = client.projects.create_in_workspace(workspace_id, {'name': 'new project'})
+    # print
+    # "Created project with id: " + project['gid']
+    # print(result)
+    # # print(list(result))
+    # for item in result:
+    #     print(item)
+
 
 def create_plugin_integration():
     integration_settings = {
@@ -39,15 +72,16 @@ def create_plugin_integration():
                       }
                     }
 
-    r = requests.post('https://api.productboard.com/plugin-integrations', data=json.dumps(integration_settings), headers=headers)
+    r = requests.post('https://api.productboard.com/plugin-integrations', data=json.dumps(integration_settings), headers=product_board_headers)
     print(r.text)
 
     return None
 
 
 if __name__ == '__main__':
-    create_plugin_integration()
+    # create_plugin_integration()
     # get_features_list()
+    get_tasks_list()
 
 
 
