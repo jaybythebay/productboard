@@ -8,8 +8,7 @@ ASANA_PERSONAL_ACCESS_TOKEN = os.getenv("ASANA_PROCUT_BOARD_TEST_2")
 product_board_headers = {'Authorization': 'Bearer ' + PRODUCT_BOARD_API_KEY,
            'X-Version': '1',
            'Content-Type': 'application/json'}
-
-# asana_headers = {'Authorization': 'Bearer ' + ASANA_CLIENT_SECRET}
+client = asana.Client.access_token(ASANA_PERSONAL_ACCESS_TOKEN)
 
 
 def get_features_list():
@@ -24,9 +23,8 @@ def get_features_list():
 
     return list
 
-
-def get_tasks_list():
-    # https://developers.asana.com/docs/authentication
+def asana_test_authentication():
+    # https://developers.asana.com/docs/python-hello-world
     print(ASANA_PERSONAL_ACCESS_TOKEN)
     client = asana.Client.access_token(ASANA_PERSONAL_ACCESS_TOKEN)
     client.options['client_name'] = "hello_world_python"
@@ -37,20 +35,13 @@ def get_tasks_list():
     print("Hello world! " + "My name is " + me['name'] + "!")
 
 
-    # result = client.tasks.get_tasks_for_project('1202041241966322', {'param': 'value', 'param': 'value'}, opt_pretty=True)
-    # print(result.data)
-    # print(ASANA_CLIENT_SECRET)
-    # me = client.users.me()
-    # print("Hello " + me['name'])
+def asana_get_tasks_list():
+    result = client.tasks.get_tasks_for_project('1202041241966322', {'param': 'value', 'param': 'value'}, opt_pretty=True)
 
-    # workspace_id = me['workspaces'][0]['gid']
-    # project = client.projects.create_in_workspace(workspace_id, {'name': 'new project'})
-    # print
-    # "Created project with id: " + project['gid']
-    # print(result)
+    print(result)
     # # print(list(result))
-    # for item in result:
-    #     print(item)
+    for item in result:
+        print(item)
 
 
 def create_plugin_integration():
@@ -81,7 +72,7 @@ def create_plugin_integration():
 if __name__ == '__main__':
     # create_plugin_integration()
     # get_features_list()
-    get_tasks_list()
+    asana_get_tasks_list()
 
 
 
